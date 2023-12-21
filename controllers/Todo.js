@@ -56,7 +56,7 @@ const updateTodo = async (req, res) => {
  const obj = {
   title,brand,price,description
  };
- Todo.findByIdAndUpdate(todoId, {obj}).then(updated => {
+ Todo.findByIdAndUpdate({_id:todoId}, obj).then(updated => {
   res.status(200).send({
   updated,
   message: "Todo updated successfully",
