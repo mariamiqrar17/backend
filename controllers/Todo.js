@@ -49,11 +49,10 @@ const deleteTodo = async (req, res) => {
 
 const updateTodo = async (req, res) => {
   try {
-    const todoId = req.params.id;
-    console.log(todoId)
-    const { title, description, price, brand } = req.body;
+   
+    const { title, description, price, brand, id } = req.body;
 
-    
+    const todoId = id;
  const obj = {
   title,brand,price,description
  };
