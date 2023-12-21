@@ -53,16 +53,13 @@ const updateTodo = async (req, res) => {
     console.log(todoId)
     const { title, description, price, brand } = req.body;
 
-    const todo = await Todo.findById(todoId);
-    if (!todo) {
-      return res.status(404).send({ error: "Todo not found" });
-    }
+    
  const obj = {
   title,brand,price,description
  };
  Todo.findByIdAndUpdate(todoId, {obj}).then(updated => {
   res.status(200).send({
-  todo,
+  updated,
   message: "Todo updated successfully",
 })}).catch(err => {
   res.status(500).json({ error: "Internal server error" });
