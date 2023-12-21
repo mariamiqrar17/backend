@@ -1,12 +1,12 @@
 const Todo = require("../models/Todo");
 
 const createTodo = async (req, res) => {
-  if (!req.body.todo) {
-    res.status(400).send({ message: "Please fill the input" });
-  }
-  const { todo } = req.body;
+  const {title,brand,price,description} = req.body;
+  console.log(title,brand,price,description)
+ 
+  
   const user = new Todo({
-    todo,
+    title,brand,price,description
   });
 
   await user
@@ -36,7 +36,6 @@ const getAllTodo = async (req, res) => {
 };
 const deleteTodo = async (req, res) => {
   try {
-    // Check if the state exists
     const deletedResource = await Todo.findByIdAndDelete(req.params.id);
     if (!deletedResource) {
       return res.status(404).json({ error: "Resource not found" });
@@ -50,32 +49,35 @@ const deleteTodo = async (req, res) => {
 
 const updateTodo = async (req, res) => {
   try {
-    const stateId = req.params.id;
-    const { todo } = req.body; // Extracting 'todo' from req.body
+    const todoId = req.params.id;
+    console.log(todoId)
+    const { title, description, price, brand } = req.body;
 
-    // Find the state by its ID
-    const state = await Todo.findById(stateId);
-    if (!state) {
+    const todo = await Todo.findById(todoId);
+    if (!todo) {
       return res.status(404).send({ error: "Todo not found" });
     }
+ const obj = {
+  title,brand,price,description
+ };
+ Todo.findByIdAndUpdate(todoId, {obj}).then(updated => {
+  res.status(200).send({
+  todo,
+  message: "Todo updated successfully",
+})}).catch(err => {
+  res.status(500).json({ error: "Internal server error" });
+})
+    // Update the properties if they exist in the request body
+    
+    // Save the updated todo
+   
 
-    // Update the 'todo' field
-    if (todo !== undefined) {
-      state.todo = todo;
-    } else {
-      return res.status(400).send({ error: "Please provide the todo value" });
-    }
-
-    // Save the updated state
-    await state.save();
-
-    res.status(200).send({
-      state,
-      message: "Todo updated successfully",
-    });
+    
   } catch (error) {
-    res.status(500).json({ error: "Internal server error" });
+    console.error(error);
+   
   }
 };
+
 
 module.exports = { createTodo, getAllTodo, deleteTodo, updateTodo };
