@@ -48,31 +48,22 @@ const deleteTodo = async (req, res) => {
 };
 
 const updateTodo = async (req, res) => {
-  try {
+
    
     const { title, description, price, brand, id } = req.body;
 
-    const todoId = id;
+
  const obj = {
   title,brand,price,description
  };
- Todo.findByIdAndUpdate({_id:todoId}, obj).then(updated => {
-  res.status(200).send({
+ Todo.findByIdAndUpdate({_id:id}, obj).then(updated => {
+  return res.status(200).send({
   updated,
   message: "Todo updated successfully",
 })}).catch(err => {
   res.status(500).json({ error: "Internal server error" });
 })
-    // Update the properties if they exist in the request body
-    
-    // Save the updated todo
-   
 
-    
-  } catch (error) {
-    console.error(error);
-   
-  }
 };
 
 
